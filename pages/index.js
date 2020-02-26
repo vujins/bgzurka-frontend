@@ -1,7 +1,7 @@
-export default function Index() {
-  return (
-    <div>
-      <p>😃😃😃😃</p>
-    </div>
-  );
-}
+const Index = () => (
+  <div>
+    <p>😃😃😃😃</p>
+  </div>
+);
+
+export default Index;
