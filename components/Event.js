@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-// import scriptjs from 'scriptjs';
-import { google_api_url } from '../config';
+import autocomplete from '../util/autocomplete';
 
 class Event extends Component {
   nameRef = React.createRef();
@@ -9,66 +8,42 @@ class Event extends Component {
   tagsRef = React.createRef();
   descriptionRef = React.createRef();
 
-  clicked = false;
+  formRef = React.createRef();
 
   componentDidMount() {
-    // must import here because it reaches for the dom
-    const scriptjs = require('scriptjs');
-
-    scriptjs(google_api_url, () => {
-      const dropdown = new google.maps.places.Autocomplete(
-        this.addressRef.current
-      );
-
-      dropdown.addListener('place_changed', () => {
-        const place = dropdown.getPlace();
-        console.log(place);
-      });
-
-      // console.log(this.addressRef);
-
-      // prevent submit form on enter
-      // this.addressRef.current.on('keydown', (event) => {
-      //   if (event.keyCode === 13) event.preventDefault();
-      // });
-    });
+    autocomplete(this.addressRef.current);
   }
 
   handleSubmit = event => {
-    // 1. prevent default
+    // prevent default submit
     event.preventDefault();
-
-    console.log(this.clicked);
-
-    // only submit if button submit clicked
-    if (this.clicked === true) {
-      // 2. create event
-      const createdEvent = {
-        name: this.nameRef.current.value,
-        date: this.dateRef.current.value,
-        address: this.addressRef.current.value, // change to location
-        tags: this.tagsRef.current.value.split(',').map(s => s.trim()), // split
-        description: this.descriptionRef.current.value
-      };
-      // this.props.addEvent(createdEvent);
-
-      // console.log(createdEvent);
-
-      // 3. refresh the form
-      event.currentTarget.reset();
-
-      // 4. reset clicked status
-      this.clicked = false;
-    }
   };
 
   handleChangeAddress = event => {
     // console.log(this.addressRef.current.value);
   };
 
+  handleClick = event => {
+    // 2. create event
+    const createdEvent = {
+      name: this.nameRef.current.value,
+      date: this.dateRef.current.value,
+      address: this.addressRef.current.value, // change to location
+      tags: this.tagsRef.current.value.split(',').map(s => s.trim()), // split
+      description: this.descriptionRef.current.value
+    };
+
+    // 3. save event
+    // this.props.addEvent(createdEvent);
+    console.log(createdEvent);
+
+    // 4. refresh the form
+    this.formRef.current.reset();
+  };
+
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} ref={this.formRef}>
         <div className="form-group">
           <label htmlFor="eventName">name</label>
           <input
@@ -123,11 +98,9 @@ class Event extends Component {
           />
         </div>
         <button
-          type="submit"
+          type="button"
           className="btn btn-primary"
-          onClick={() => {
-            this.clicked = true;
-          }}
+          onClick={this.handleClick}
         >
           Submit
         </button>
