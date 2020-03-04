@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import autocomplete from '../util/autocomplete';
+import axios from 'axios';
 
 class Event extends Component {
   nameRef = React.createRef();
@@ -28,17 +29,29 @@ class Event extends Component {
     const createdEvent = {
       name: this.nameRef.current.value,
       date: this.dateRef.current.value,
-      address: this.addressRef.current.value, // change to location
-      tags: this.tagsRef.current.value.split(',').map(s => s.trim()), // split
+      location: {
+        type: 'Point',
+        address: this.addressRef.current.value,
+        coordinates: [20.4489, 44.7866]
+      },
+      tags: this.tagsRef.current.value.split(',').map(s => s.trim()),
       description: this.descriptionRef.current.value
     };
 
     // 3. save event
     // this.props.addEvent(createdEvent);
-    console.log(createdEvent);
-
-    // 4. refresh the form
-    this.formRef.current.reset();
+    // console.log(createdEvent);
+    axios
+      .post('http://localhost:7777/event', createdEvent)
+      .then(res => {
+        console.log(res);
+        // 4. refresh the form
+        this.formRef.current.reset();
+      })
+      .catch(err => {
+        console.log('greska');
+        console.log(err);
+      });
   };
 
   render() {
@@ -102,7 +115,7 @@ class Event extends Component {
           className="btn btn-primary"
           onClick={this.handleClick}
         >
-          Submit
+          Save
         </button>
       </form>
     );

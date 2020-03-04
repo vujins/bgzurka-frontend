@@ -20,6 +20,7 @@
   "homepage": "https://github.com/vujins/bgzurka-backend#readme",
   "keywords": [],
   "dependencies": {
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "next": "^9.2.2",
     "nprogress": "^0.2.0",
