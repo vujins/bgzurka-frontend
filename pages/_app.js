@@ -5,29 +5,33 @@ import axios from 'axios';
 
 import 'nprogress/nprogress.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const base_url = 'http://localhost:7777';
-const events_url = base_url + '/event';
+import { events_url } from '../util/config';
 
 class MyApp extends App {
   state = {
     events: [],
-    currentEvent: 0
+    currentEvent: {}
   };
 
   componentDidMount() {
-    this.loadEvents();
+    // TODO regulisi greske
+    this.loadEvents().catch(err => {
+      console.log('greska');
+      console.log(err);
+    });
   }
 
-  loadEvents = () => {
+  loadEvents = async () => {
     // 1. copy existing state
     // const events = { ...this.state.events };
 
-    // 2. update events
-    axios.get(events_url).then(res => {
-      const events = res.data;
-      // 3. update state
-      this.setState({ events: events, currentEvent: events && events[0] });
+    // 2. fetch events from api
+    const events = await (await axios.get(events_url)).data;
+
+    // 3. update events
+    this.setState({
+      events: events,
+      currentEvent: events && events.length > 0 && events[0]
     });
   };
 
@@ -52,11 +56,7 @@ class MyApp extends App {
     return (
       <>
         <Page>
-          <Component
-            events={this.state.events}
-            currentEvent={this.state.currentEvent}
-            selectEvent={this.selectEvent}
-          />
+          <Component {...this.state} selectEvent={this.selectEvent} />
         </Page>
       </>
     );

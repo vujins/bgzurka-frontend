@@ -2,19 +2,22 @@ import React from 'react';
 import Rating from './Rating';
 
 const Event = props => {
-  const d = new Date(props.event && props.event.date);
+  // if no event is pass return null
+  if (!props.event || !props.event.name) return null;
+
+  const d = new Date(props.event.date);
   return (
     <div className="media">
       <img
-        src={props.event && props.event.img}
+        src={props.event.img}
         alt=""
-        className="mr-3 img-fluid"
+        className="mr-3 img-fluid d-none d-sm-block"
         width="100"
-        height="200"
+        height="150"
       />
       <div className="media-body">
-        <h5 className="mt-0 mb-1">{props.event && props.event.name}</h5>
-        <h6>{props.event && props.event.location.address}</h6>
+        <h5 className="mt-0 mb-1">{props.event.name}</h5>
+        <h6>{props.event.location.address}</h6>
         {d.getDate()}/{d.getMonth() + 1}/{d.getFullYear()}
         <p className="mt-0 mb-0">
           {props.fullDescription
@@ -25,14 +28,16 @@ const Event = props => {
                   : '... Click to read more!'
               }`}
         </p>
-        <Rating rating={props.event.rating / props.event.ratingCount} key={props.event && props.event.slug}/>
+        <Rating
+          rating={props.event.rating / props.event.ratingCount}
+          key={props.event.slug}
+        />
         <div>
-          {props.event && props.event.tags &&
-            props.event.tags.map(tag => (
-              <span className="badge badge-primary mr-1" key={tag}>
-                {tag}
-              </span>
-            ))}
+          {props.event.tags.map(tag => (
+            <span className="badge badge-primary mr-1" key={tag}>
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
     </div>

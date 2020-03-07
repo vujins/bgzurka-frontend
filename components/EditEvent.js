@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import autocomplete from '../util/autocomplete';
 import axios from 'axios';
 import { getToday } from '../util/util';
+import { events_url } from '../util/config';
 
 class EditEvent extends Component {
   nameRef = React.createRef();
@@ -59,7 +60,7 @@ class EditEvent extends Component {
     // 3. save event
     // this.props.addEvent(createdEvent);
     axios
-      .post('http://localhost:7777/event', createdEvent)
+      .post(events_url, createdEvent)
       .then(res => {
         // console.log(res);
         // 4. refresh the form
