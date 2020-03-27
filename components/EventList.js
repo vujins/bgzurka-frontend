@@ -1,27 +1,28 @@
-import Axios from 'axios';
 import Link from 'next/link';
 import React from 'react';
-import { events_url } from '../util/config';
 import Event from './Event';
 import Map from './Map';
 
 const EventList = props => {
-  if (!props.events || props.events.length === 0 || !props.events[0].name)
+  if (!props.events)
     return null;
+
+  // array of events
+  const events = Object.values(props.events);
+
   return (
     <>
       {/* <div className="col-7"> */}
-      <Map events={props.events} />
+      <Map events={events} />
       {/* </div> */}
 
       {/* <div className="col-5"> */}
       <div className="list-group mt-2">
-        {props.events.map(event => (
-          <Link href="/test" key={event.slug}>
+        {events.map(event => (
+          <Link href="/events/[slug]" as={`/events/${event.slug}`} key={event.slug}>
             <a
               className="list-group-item list-group-item-action"
               key={event.slug}
-              onClick={() => props.selectEvent(event)}
             >
               <Event event={event} />
             </a>

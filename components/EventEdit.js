@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getToday } from '../util/util';
 import { events_url } from '../util/config';
 
-class EditEvent extends Component {
+class EventEdit extends Component {
   nameRef = React.createRef();
   dateRef = React.createRef();
   addressRef = React.createRef();
@@ -53,7 +53,7 @@ class EditEvent extends Component {
         address: this.state.location.address,
         coordinates: [this.state.location.lng, this.state.location.lat]
       },
-      tags: this.tagsRef.current.value.split(',').map(s => s.trim()),
+      tags: this.tagsRef.current.value.toLowerCase().split(',').map(s => s.trim()),
       description: this.descriptionRef.current.value
     };
 
@@ -142,4 +142,4 @@ class EditEvent extends Component {
   }
 }
 
-export default EditEvent;
+export default EventEdit;

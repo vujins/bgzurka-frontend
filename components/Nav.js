@@ -1,6 +1,24 @@
 import Link from 'next/link';
 
 const Nav = () => {
+  const items = [
+    {
+      nav: '/',
+      navname: 'Home'
+    },
+    {
+      nav: '/events/all',
+      navname: 'Events'
+    },
+    {
+      nav: '/editevent',
+      navname: 'Edit Event'
+    },
+    {
+      nav: '/test',
+      navname: 'Test'
+    }
+  ];
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
       <Link href="/">
@@ -10,7 +28,7 @@ const Nav = () => {
             width="150"
             height="30"
             className="d-inline-block align-top"
-            alt=""
+            alt="bgzurka-logo"
           />
         </a>
       </Link>
@@ -28,26 +46,13 @@ const Nav = () => {
 
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
-          <li className="nav-item">
-            <Link href="/">
-              <a className="nav-link">Home</a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/events">
-              <a className="nav-link">Events</a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/editevent">
-              <a className="nav-link">Edit Event</a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/test">
-              <a className="nav-link">Test</a>
-            </Link>
-          </li>
+          {items.map(item => (
+            <li className="nav-item">
+              <Link href={item.nav}>
+                <a className="nav-link">{item.navname}</a>
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </nav>

@@ -9,8 +9,7 @@ import { events_url } from '../util/config';
 
 class MyApp extends App {
   state = {
-    events: [],
-    currentEvent: {}
+    events: {}
   };
 
   componentDidMount() {
@@ -23,30 +22,17 @@ class MyApp extends App {
 
   loadEvents = async () => {
     // 1. copy existing state
-    // const events = { ...this.state.events };
+    const events = { ...this.state.events };
 
     // 2. fetch events from api
-    const events = await (await axios.get(events_url)).data;
+    const eventsarray = await (await axios.get(events_url)).data;
+
+    // format data
+    eventsarray.forEach(event => events[event.slug] = event);
 
     // 3. update events
     this.setState({
-      events: events,
-      currentEvent: events && events.length > 0 && events[0]
-    });
-  };
-
-  selectEvent = currentEvent => {
-    // console.log(currentEvent);
-
-    // 1. copy existing current event
-    // let currentEvent = { ...this.state.currentEvent };
-
-    // 2. update current event
-    // currentEvent = event;
-
-    // 3. save state
-    this.setState({
-      currentEvent: currentEvent
+      events
     });
   };
 
@@ -56,7 +42,7 @@ class MyApp extends App {
     return (
       <>
         <Page>
-          <Component {...this.state} selectEvent={this.selectEvent} />
+          <Component {...this.state} />
         </Page>
       </>
     );

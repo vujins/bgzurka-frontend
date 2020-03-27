@@ -1,8 +1,8 @@
 import React from 'react';
-import EditEvent from '../components/EditEvent';
+import EventEdit from '../components/EventEdit';
 
 const editevent = props => {
-  return <EditEvent />;
+  return <EventEdit />;
 };
 
 export default editevent;

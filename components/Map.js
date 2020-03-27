@@ -18,12 +18,7 @@ class Map extends Component {
 
   componentDidMount() {
     // if no events passed
-    if (
-      !this.props.events ||
-      this.props.events.length === 0 ||
-      !this.props.events[0].name
-    )
-      return;
+    if (!this.props.events) return;
 
     // must import after component mounts because it reaches for the dom
     const scriptjs = require('scriptjs');
@@ -32,14 +27,15 @@ class Map extends Component {
       const options = {
         center: this.props.center,
         zoom: this.props.zoom,
-        mapTypeControl: false // satelite/normal option
+        mapTypeControl: false, // satelite/normal option
+        gestureHandling: 'greedy'
       };
       const map = new google.maps.Map(this.divRef.current, options);
 
       // add open popups to this list
       const openinfowindows = [];
 
-      this.props.events.map(event => {
+      this.props.events.forEach(event => {
         const marker = new google.maps.Marker({
           position: {
             lat: event.location.coordinates[1],
